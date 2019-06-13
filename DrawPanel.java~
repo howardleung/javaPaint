@@ -1,0 +1,89 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+ 
+public class DrawPanel extends JPanel {
+    private JLabel statusBar; 
+    private int freeIndex = 0;
+    private Rectangle currentRectangle = null;
+    private Rectangle[] lines = new Rectangle[1000];
+    
+    
+    
+    // Constructor instantiates an array of 10 Random Rectangle objects
+    public DrawPanel( JLabel statusLabel ) {
+        statusBar = statusLabel;
+        setBackground( Color.WHITE ); 
+        
+        // Create and register listener for mouse and mouse motion events
+        MouseEventListener drawPanelListener = new MouseEventListener(); 
+        addMouseListener( drawPanelListener ); 
+        addMouseMotionListener( drawPanelListener );       
+    } 
+    
+    // Inner class to handle mouse events
+    class MouseEventListener extends MouseAdapter {
+        // Mouse press indicates a new line has been started
+        @Override
+        public void mousePressed( MouseEvent event ) {
+            currentRectangle = new Rectangle( event.getX(), event.getY(), event.getX(), event.getY(), Color.RED,true );
+            // Tell JVM to call paintComponent( g )
+            repaint();
+        } 
+        
+        // Mouse release indicates the new line is finished
+        @Override
+        public void mouseReleased( MouseEvent event ) {
+            // Update ending coordinates and switch color to BLACK
+            currentRectangle.setx2( event.getX() );
+            currentRectangle.sety2( event.getY() );
+            currentRectangle.setColor( Color.BLACK );
+            
+            // If there's space, add the new line to our array
+            if ( freeIndex < lines.length ) {
+                lines[freeIndex] = currentRectangle;
+                freeIndex++;
+            }
+            
+            // Get ready for the next line to be drawn
+            currentRectangle = null;
+            repaint();            
+        } 
+        
+        // As mouse is dragged, update ending coordinates of currentRectangle and statusBar
+        @Override
+        public void mouseDragged( MouseEvent event ) {
+            currentRectangle.setx2( event.getX() );
+            currentRectangle.sety2( event.getY() );
+            statusBar.setText( String.format( "Mouse at (%d, %d)", 
+                                             event.getX(), event.getY() ) );
+            repaint();
+        } 
+        
+        // As mouse is moved, just update the statusBar
+        @Override
+        public void mouseMoved( MouseEvent event ) {
+            statusBar.setText( String.format( "Mouse at (%d, %d)", 
+                                             event.getX(), event.getY() ) );
+        
+        } 
+    } 
+    
+    // This method is called automatically by the JVM when the window needs to be (re)drawn.
+    @Override
+    public void paintComponent( Graphics g ) {
+        super.paintComponent( g );
+        // Call the draw() method for each Rectangle object in the array
+        for ( int i = 0; i < freeIndex; i++ ) 
+            lines[i].draw( g );
+        
+        // If a line is in progress, draw it on top of all others
+        if ( currentRectangle != null )
+            currentRectangle.draw( g );
+    } 
+} 

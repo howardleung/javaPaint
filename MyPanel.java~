@@ -1,0 +1,47 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JPanel;
+import java.util.Random;
+public class MyPanel extends JPanel {
+    Random r = new Random();
+    // This method is called automatically by the JVM when the window needs to be (re)drawn.
+    @Override
+    public void paintComponent( Graphics g ) {
+        // We MUST call the overridden paintComponent() method from JPanel first
+        super.paintComponent( g );
+        
+        // Get the dimensions of the panel in pixels
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
+        int choice;
+        Shape s;
+        boolean fill = false;
+        // Draw diagonal lines between opposite corners
+        for (int x=0; x<10; x++){
+            choice =r.nextInt(3);
+            Color c = new Color( r.nextInt(255),  r.nextInt(255),  r.nextInt(255) );
+            if (r.nextInt(2) == 1)
+                fill = true;
+            else
+                fill = false;
+            if (choice == 0){
+                s = new Line( r.nextInt(panelWidth/2),r.nextInt(panelWidth),r.nextInt(panelHeight/2), r.nextInt(panelHeight), c);
+                s.draw(g);
+                
+            }
+            else if (choice == 1){
+                s = new Rectangle( r.nextInt(panelWidth/2),r.nextInt(panelWidth),r.nextInt(panelHeight/2), r.nextInt(panelHeight), c, fill);
+                s.draw(g);
+                
+            }
+            else if (choice == 2){
+                s = new Oval( r.nextInt(panelWidth/2),r.nextInt(panelWidth),r.nextInt(panelHeight/2), r.nextInt(panelHeight), c,fill);
+                s.draw(g);
+                
+            }
+            
+       
+        }
+        
+    }
+}

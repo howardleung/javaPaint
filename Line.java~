@@ -1,0 +1,16 @@
+import java.util.Random;
+import java.awt.Color;
+import java.awt.Graphics;
+public class Line extends Shape{
+    
+    public Line(int x1,int y1,int x2,int y2,Color c){
+        super(x1,y1,x2,y2,c);
+    }
+    
+    public void draw(Graphics g){
+      //  Random r = new Random();
+       // Color faceColor = new Color( r.nextInt(255),  r.nextInt(255),  r.nextInt(255) );
+       // g.setColor( faceColor );
+        g.drawLine( getx1(), gety1(), getx2(), gety2() );  
+    }
+}

@@ -1,0 +1,22 @@
+
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+ 
+public class SuperPaint {
+    public static void main( String[] args ) {
+        DrawFrame application = new DrawFrame();
+       // JFrame appWindow = new JFrame( "Line Painter App" );
+        
+                         // Put statusLabel in NORTH to display mouse coordinates
+      //  JLabel statusLabel = new JLabel();
+      //  appWindow.add( statusLabel, BorderLayout.NORTH );
+        
+        // Put DrawPanel in CENTER and pass reference to statusLabel for updates
+      //  appWindow.add( new DrawPanel( statusLabel ), BorderLayout.CENTER );       
+                          
+        appWindow.setSize(  480, 320 );
+        appWindow.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+        appWindow.setVisible( true );
+    }    
+}
